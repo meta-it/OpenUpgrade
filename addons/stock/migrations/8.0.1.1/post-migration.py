@@ -829,6 +829,7 @@ def migrate(cr, version):
         migrate_product_supply_method(cr, registry)
         migrate_procurement_order(cr, registry)
 
+    openupgrade.delete_model_workflow(cr, 'stock.picking')
     migrate_stock_qty(cr, registry)
     migrate_stock_production_lot(cr, registry)
 
@@ -836,7 +837,6 @@ def migrate(cr, version):
     openupgrade.set_defaults(cr, registry, default_spec, force=False)
 
     migrate_product(cr, registry)
-    openupgrade.delete_model_workflow(cr, 'stock.picking')
     openupgrade_80.set_message_last_post(
         cr, uid, registry, ['stock.production.lot', 'stock.picking'])
     migrate_move_inventory(cr, registry)
