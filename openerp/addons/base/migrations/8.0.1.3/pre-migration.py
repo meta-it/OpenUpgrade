@@ -26,7 +26,26 @@ from openerp.addons.openupgrade_records.lib import apriori
 xml_ids = [
     ('portal.group_anonymous', 'base.group_public'),
     ('portal.group_portal', 'base.group_portal'),
-    ]
+    ('l10n_gt.GTQ', 'base.GTQ'),
+    ('l10n_gt.rateGTQ', 'base.rateGTQ'),
+]
+
+
+def cleanup_modules(cr):
+    """Don't report as missing these modules, as they are integrated in
+    other modules."""
+    openupgrade.update_module_names(
+        cr, [
+            ('account_report_company', 'account'),
+            ('base_status', 'base'),
+            # from OCA/product-attribute
+            ('product_customer_code', 'product_supplierinfo_for_customer'),
+            # from OCA/sale-workflow - included in core
+            ('sale_multi_picking', 'sale_procurement_group_by_line'),
+            # from OCA/stock-logistics-workflow
+            ('stock_cancel', 'stock_picking_back2draft'),
+        ], merge_modules=True,
+    )
 
 
 @openupgrade.migrate()
@@ -40,8 +59,18 @@ def migrate(cr, version):
     openupgrade.rename_xmlids(cr, xml_ids)
     openupgrade.check_values_selection_field(
         cr, 'ir_act_report_xml', 'report_type',
-        ['controller', 'pdf', 'qweb-html', 'qweb-pdf', 'sxw', 'webkit'])
+        ['controller', 'pdf', 'qweb-html', 'qweb-pdf', 'sxw', 'webkit', 'aeroo', 'cvs'])
     openupgrade.check_values_selection_field(
         cr, 'ir_ui_view', 'type', [
             'calendar', 'diagram', 'form', 'gantt', 'graph', 'kanban',
-            'qweb', 'search', 'tree'])
+            'qweb', 'search', 'tree', 'tree_account_reconciliation'])
+
+    # The tables stock.picking.in and stock.picking.out are merged into
+    # stock.picking
+    openupgrade.logged_query(
+        cr, """
+        UPDATE ir_attachment
+        SET res_model = 'stock.picking'
+        WHERE res_model in ('stock.picking.in', 'stock.picking.out');
+        """)
+    cleanup_modules(cr)

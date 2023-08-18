@@ -4,16 +4,20 @@
 # 
 # Translators:
 # Adriana Ierfino <adriana.ierfino@savoirfairelinux.com>, 2015
+# Agathe Mollé <molleagathe@gmail.com>, 2015
+# Christophe CHAUVET <christophe.chauvet@gmail.com>, 2016
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014
 # Florian Hatat, 2015
+# Jérôme Tanché <jerome.tanche@ouest-dsi.fr>, 2016
 # Richard Mathot <rim@odoo.com>, 2015
+# Tony Galmiche <tony.galmiche@infosaone.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo 8.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-08 15:14+0000\n"
-"PO-Revision-Date: 2015-11-11 17:15+0000\n"
-"Last-Translator: Florian Hatat\n"
+"PO-Revision-Date: 2016-07-04 23:46+0000\n"
+"Last-Translator: Jérôme Tanché <jerome.tanche@ouest-dsi.fr>\n"
 "Language-Team: French (http://www.transifex.com/odoo/odoo-8/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -78,7 +82,7 @@ msgstr "<p>Je suis intéressé par cette piste.</p>"
 #: code:addons/crm_partner_assign/wizard/crm_channel_interested.py:53
 #, python-format
 msgid "<p>I am not interested by this lead. I %scontacted the lead.</p>"
-msgstr ""
+msgstr "<p>Je ne suis pas intéressé par cette opportunité. J'ai %s contacté pour cette opportunité.</p>"
 
 #. module: crm_partner_assign
 #: code:addons/crm_partner_assign/wizard/crm_channel_interested.py:55
@@ -114,7 +118,7 @@ msgstr "Mois d'attribution"
 #. module: crm_partner_assign
 #: model:ir.actions.server,name:crm_partner_assign.action_assign_salesman_according_assigned_partner
 msgid "Assign salesman of assigned partner"
-msgstr "Attribue le commercial du partenaire attribué"
+msgstr "Assigne le vendeur du partenaire attribué"
 
 #. module: crm_partner_assign
 #: field:crm.lead,date_assign:0
@@ -177,7 +181,7 @@ msgstr "Annuler"
 #. module: crm_partner_assign
 #: view:crm.lead:crm_partner_assign.crm_opportunity_portal_form
 msgid "Categorization"
-msgstr ""
+msgstr "Catégorisation"
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,date_closed:0
@@ -239,7 +243,7 @@ msgstr "Date de création"
 #: field:res.partner.activation,create_uid:0
 #: field:res.partner.grade,create_uid:0
 msgid "Created by"
-msgstr "Créée par"
+msgstr "Créé par"
 
 #. module: crm_partner_assign
 #: field:crm.lead.assignation,create_date:0
@@ -248,7 +252,7 @@ msgstr "Créée par"
 #: field:res.partner.activation,create_date:0
 #: field:res.partner.grade,create_date:0
 msgid "Created on"
-msgstr "Créée le"
+msgstr "Créé le"
 
 #. module: crm_partner_assign
 #: view:crm.lead:crm_partner_assign.crm_lead_partner_filter
@@ -276,7 +280,7 @@ msgstr "Date de révision"
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,delay_open:0
 msgid "Delay to Assign"
-msgstr ""
+msgstr "Délai à attribuer"
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,delay_close:0
@@ -291,7 +295,7 @@ msgstr "Détails"
 #. module: crm_partner_assign
 #: field:crm.lead.channel.interested,contacted:0
 msgid "Did you contact the lead?"
-msgstr "Avez-vous contacté ce lead?"
+msgstr "Avez-vous contacté ce prospect?"
 
 #. module: crm_partner_assign
 #: view:crm.lead.channel.interested:crm_partner_assign.crm_lead_channel_interested_form
@@ -303,7 +307,7 @@ msgstr "Avez-vous contacté le client ?"
 #: code:addons/crm_partner_assign/wizard/crm_forward_to_partner.py:105
 #, python-format
 msgid "Email Error"
-msgstr ""
+msgstr "Courriel d'erreur"
 
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:crm_partner_assign.crm_lead_forward_to_partner_form
@@ -314,7 +318,7 @@ msgstr "Modèle de courriel"
 #: code:addons/crm_partner_assign/wizard/crm_forward_to_partner.py:87
 #, python-format
 msgid "Email Template Error"
-msgstr ""
+msgstr "Modèle de courriel d'erreur"
 
 #. module: crm_partner_assign
 #: code:addons/crm_partner_assign/crm_lead.py:34
@@ -331,7 +335,7 @@ msgstr "Escalader"
 #. module: crm_partner_assign
 #: view:crm.lead:crm_partner_assign.crm_opportunity_portal_tree
 msgid "Expected Revenues"
-msgstr ""
+msgstr "Revenus estimés"
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:crm_partner_assign.view_report_crm_lead_assign_filter
@@ -357,7 +361,7 @@ msgstr "Transférer au partenaire"
 #. module: crm_partner_assign
 #: model:email.template,subject:crm_partner_assign.email_template_lead_forward_mail
 msgid "Fwd: Lead: ${ctx['partner_id'].name}"
-msgstr "Fwd: Prospects: ${ctx['partner_id'].name}"
+msgstr "Tr: Prospects: ${ctx['partner_id'].name}"
 
 #. module: crm_partner_assign
 #: field:crm.lead,partner_latitude:0
@@ -406,7 +410,7 @@ msgstr "Nom du niveau"
 #. module: crm_partner_assign
 #: field:res.partner,partner_weight:0 field:res.partner.grade,partner_weight:0
 msgid "Grade Weight"
-msgstr ""
+msgstr "Importance"
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:crm_partner_assign.view_report_crm_lead_assign_filter
@@ -486,7 +490,7 @@ msgstr "Dernière date à laquelle ce cas a été transmis / affecté à un part
 #: field:crm.partner.report.assign,date_review:0
 #: field:res.partner,date_review:0
 msgid "Latest Partner Review"
-msgstr "Dernière révision du partenaire."
+msgstr "Dernière révision du partenaire"
 
 #. module: crm_partner_assign
 #: field:crm.lead.assignation,lead_id:0
@@ -507,7 +511,7 @@ msgstr "Assignation de la piste"
 #. module: crm_partner_assign
 #: model:ir.actions.act_window,name:crm_partner_assign.crm_lead_channel_interested_act
 msgid "Lead Feedback"
-msgstr "Commentaire du lead"
+msgstr "Commentaire sur la piste"
 
 #. module: crm_partner_assign
 #: field:crm.lead.assignation,lead_location:0
@@ -583,7 +587,7 @@ msgstr "Nombre de jours pour ouvrir le cas"
 #. module: crm_partner_assign
 #: view:crm.lead.channel.interested:crm_partner_assign.crm_lead_channel_interested_form
 msgid "Once the lead is processed, it will be in your \"Opportunities\" menu."
-msgstr "Une fois que le prospect est traitée, il sera dans votre menu \"Opportunités\"."
+msgstr "Une fois le prospect traité, il sera dans votre menu \"Opportunités\"."
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,opening_date:0
@@ -636,7 +640,7 @@ msgstr "Activation de partenaire"
 #: model:ir.actions.act_window,name:crm_partner_assign.res_partner_activation_act
 #: model:ir.ui.menu,name:crm_partner_assign.res_partner_activation_config_mi
 msgid "Partner Activations"
-msgstr "Activation de partenaires"
+msgstr "Activations de partenaire"
 
 #. module: crm_partner_assign
 #: view:crm.lead:crm_partner_assign.view_crm_lead_geo_assign_form
@@ -700,7 +704,7 @@ msgstr "Chiffre d'affaires prévu"
 #: code:addons/crm_partner_assign/wizard/crm_forward_to_partner.py:92
 #, python-format
 msgid "Portal Group Error"
-msgstr ""
+msgstr "Erreur du groupe portail"
 
 #. module: crm_partner_assign
 #: view:crm.lead:crm_partner_assign.crm_opportunity_portal_form
@@ -737,7 +741,7 @@ msgstr "Envoyer"
 #: view:crm.lead:crm_partner_assign.view_crm_lead_geo_assign_form
 #: view:crm.lead:crm_partner_assign.view_crm_opportunity_geo_assign_form
 msgid "Send Email"
-msgstr "Envoyer courriel"
+msgstr "Envoyer un courriel"
 
 #. module: crm_partner_assign
 #: view:crm.lead.channel.interested:crm_partner_assign.crm_lead_channel_interested_form
@@ -772,18 +776,18 @@ msgstr "Le canal CRM \"Action intéressante\" est manquant"
 #: code:addons/crm_partner_assign/wizard/crm_forward_to_partner.py:88
 #, python-format
 msgid "The Forward Email Template is not in the database"
-msgstr "Le modèle d'email transféré n'est pas dans la base de données"
+msgstr "Le modèle de courriel transféré n'est pas dans la base de données"
 
 #. module: crm_partner_assign
 #: code:addons/crm_partner_assign/wizard/crm_forward_to_partner.py:93
 #, python-format
 msgid "The Portal group cannot be found"
-msgstr "Le groupe du protail n'a pas été trouvé"
+msgstr "Le groupe du portail n'a pas été trouvé"
 
 #. module: crm_partner_assign
 #: help:crm.lead.channel.interested,contacted:0
 msgid "The lead has been contacted"
-msgstr ""
+msgstr "Cette opportunité a été contacté"
 
 #. module: crm_partner_assign
 #: model:crm.case.stage,name:crm_partner_assign.stage_portal_lead_recycle
@@ -814,27 +818,27 @@ msgstr "Utilisateur"
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "Very High"
-msgstr ""
+msgstr "Très haut"
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "Very Low"
-msgstr ""
+msgstr "Très bas"
 
 #. module: crm_partner_assign
 #: help:crm.lead.channel.interested,comment:0
 msgid "What are the elements that have led to this decision?"
-msgstr "Quels sont les éléments qui ont conduit à cette décision?"
+msgstr "Quels sont les éléments qui ont conduit à cette décision ?"
 
 #. module: crm_partner_assign
 #: view:crm.lead.channel.interested:crm_partner_assign.crm_lead_channel_interested_form
 msgid "What is the next action? When? What is the expected revenue?"
-msgstr "Quelle est la prochaine action? Quand? Quel est le chiffre d'affaires attendu?"
+msgstr "Quelle est la prochaine action ? Quand ? Quel est le revenu attendu ?"
 
 #. module: crm_partner_assign
 #: view:crm.lead.channel.interested:crm_partner_assign.crm_lead_channel_interested_form
 msgid "Why aren't you interested by this lead?"
-msgstr "Pourquoi n'êtes-vous pas intéressé par ce lead?"
+msgstr "Pourquoi n'êtes-vous pas intéressé par cette piste ?"
 
 #. module: crm_partner_assign
 #: code:addons/crm_partner_assign/wizard/crm_channel_interested.py:44
@@ -845,7 +849,7 @@ msgstr "Vous devez contacter le prospect avant de dire que vous êtes intéress�
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,forward_type:0
 msgid "a single partner: manual selection of partner"
-msgstr "un seul partenaire: sélection manuelle de partenaire"
+msgstr "un seul partenaire : sélection manuelle de partenaire"
 
 #. module: crm_partner_assign
 #: view:crm.lead.channel.interested:crm_partner_assign.crm_lead_channel_interested_form
@@ -858,4 +862,4 @@ msgstr "ou"
 msgid ""
 "several partners: automatic assignation, using GPS coordinates and partner's"
 " grades"
-msgstr "plusieurs partenaires: attribution automatique, utilisation des coordonnées GPS et des grades des partenaires"
+msgstr "plusieurs partenaires : attribution automatique, utilisation des coordonnées GPS et des notes des partenaires"

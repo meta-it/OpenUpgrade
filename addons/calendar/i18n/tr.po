@@ -3,15 +3,15 @@
 # * calendar
 # 
 # Translators:
-# Alper Çiftçi <alprciftci@gmail.com>, 2015
+# Alper Çiftçi <inactive+alprciftci@transifex.com>, 2015
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo 8.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-25 13:28+0000\n"
-"PO-Revision-Date: 2015-11-27 08:31+0000\n"
-"Last-Translator: Martin Trigaux\n"
+"PO-Revision-Date: 2016-11-15 19:04+0000\n"
+"Last-Translator: Murat Kaplan <muratk@projetgrup.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/odoo/odoo-8/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -417,13 +417,13 @@ msgstr "${object.event_id.name} - Hatırlatma"
 msgid ""
 "%s at %s To\n"
 " %s at %s (%s)"
-msgstr ""
+msgstr "%s / %s -\n %s / %s (%s)"
 
 #. module: calendar
 #: code:addons/calendar/calendar.py:800
 #, python-format
 msgid "%s at (%s To %s) (%s)"
-msgstr ""
+msgstr "%s / (%s - %s) (%s)"
 
 #. module: calendar
 #: model:ir.actions.act_window,help:calendar.action_calendar_event
@@ -556,7 +556,7 @@ msgstr "Takvim"
 #: model:ir.actions.act_window,name:calendar.action_calendar_alarm
 #: model:ir.ui.menu,name:calendar.menu_calendar_alarm
 msgid "Calendar Alarm"
-msgstr ""
+msgstr "Takvim Alarmı"
 
 #. module: calendar
 #. openerp-web
@@ -779,7 +779,7 @@ msgstr "İlk davet tarihini belirtmeniz gerekir."
 #. module: calendar
 #: field:calendar.event,message_follower_ids:0
 msgid "Followers"
-msgstr "İzleyiciler"
+msgstr "Takipçiler"
 
 #. module: calendar
 #: selection:calendar.event,byday:0
@@ -852,7 +852,7 @@ msgstr "Eğer işaretliyse yeni iletiler ilginizi gerektirir."
 msgid ""
 "If the active field is set to false, it will allow you to hide the event "
 "alarm information without removing it."
-msgstr ""
+msgstr "Şayet aktif alanı etkin değil olarak ayarlanırsa, etkinlik alarmını etkinliği kaldırmanıza gerek kalmadan kapayabilirsiniz."
 
 #. module: calendar
 #: model:calendar.event.type,name:calendar.categ_meet2
@@ -887,7 +887,7 @@ msgstr "Davet sihirbazı"
 #. module: calendar
 #: field:calendar.event,message_is_follower:0
 msgid "Is a Follower"
-msgstr "Bir İzleyicidir"
+msgstr "Bir Takipçidir"
 
 #. module: calendar
 #: selection:calendar.event,byday:0

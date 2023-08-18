@@ -20,8 +20,12 @@
 #
 ##############################################################################
 import logging
+
+from psycopg2 import sql
+
 from openerp.openupgrade import openupgrade, openupgrade_80
 from openerp import pooler, SUPERUSER_ID as uid
+from openerp.models import AUTOINIT_RECALCULATE_STORED_FIELDS
 
 logger = logging.getLogger('OpenUpgrade.purchase')
 
@@ -78,6 +82,21 @@ def create_workitem_picking(cr, uid, pool):
                 (wkf_activity, wkf_instance, 'complete',))
 
 
+def migrate_purchase_order(cr):
+    """Copy currency_id from pricelist, as the field was a related non-stored
+    one.
+    :param cr: Database cursor
+    """
+    openupgrade.logged_query(
+        cr, """
+            UPDATE purchase_order po
+            SET currency_id = pp.currency_id
+            FROM product_pricelist pp
+            WHERE pp.id = po.pricelist_id
+            AND pp.currency_id != po.currency_id
+        """)
+
+
 def migrate_product_supply_method(cr):
     """
     Procurements of products: change the supply_method for the matching route
@@ -113,6 +132,27 @@ def migrate_procurement_order(cr):
     supplier or production location to stock) are also recorded on the
     procurement. For purchase procurements, gather them here.
     """
+    legacy_purchase_id = openupgrade.get_legacy_name('purchase_id')
+    # Add indexes to fasten next queries
+    openupgrade.logged_query(
+        cr,
+        """
+        CREATE INDEX IF NOT EXISTS procurement_order_purchase_line_id_index
+        ON procurement_order (purchase_line_id)
+        """,
+    )
+    openupgrade.logged_query(
+        cr,
+        sql.SQL(
+            """
+            CREATE INDEX IF NOT EXISTS {}
+            ON procurement_order ({})
+            """,
+        ).format(
+            sql.Identifier("procurement_order_%s_index" % legacy_purchase_id),
+            sql.Identifier(legacy_purchase_id),
+        )
+    )
     openupgrade.logged_query(
         cr,
         """
@@ -123,7 +163,7 @@ def migrate_procurement_order(cr):
              AND pol.{move_dest_id} IS NOT NULL
              AND pol.{move_dest_id} = proc.move_dest_id
         """.format(
-            purchase_id=openupgrade.get_legacy_name('purchase_id'),
+            purchase_id=legacy_purchase_id,
             move_dest_id=openupgrade.get_legacy_name('move_dest_id')))
 
     openupgrade.logged_query(
@@ -139,8 +179,7 @@ def migrate_procurement_order(cr):
                  SELECT purchase_line_id
                  FROM procurement_order
                  WHERE purchase_line_id IS NOT NULL)
-        """.format(
-            purchase_id=openupgrade.get_legacy_name('purchase_id')))
+        """.format(purchase_id=legacy_purchase_id))
 
     # Warn about dangling procurements
     cr.execute(
@@ -149,8 +188,7 @@ def migrate_procurement_order(cr):
         WHERE purchase_line_id IS NULL
             AND {purchase_id} IS NOT NULL
             AND state NOT IN ('done', 'exception')
-        """.format(
-            purchase_id=openupgrade.get_legacy_name('purchase_id')))
+        """.format(purchase_id=legacy_purchase_id))
     count = cr.fetchone()[0]
     if count:
         logger.warning(
@@ -187,10 +225,41 @@ def migrate_stock_warehouse(cr, pool):
             "order to access this setting.")
 
 
+def compute_reception_to_invoice(cr, pool):
+    picking_obj = pool['stock.picking']
+    # Get picking related to purchase with invoice method set to picking
+    cr.execute(
+        """
+        SELECT distinct(picking_id)
+        FROM stock_move sm
+        INNER JOIN purchase_order_line pol ON sm.purchase_line_id = pol.id
+        INNER JOIN purchase_order po on pol.order_id = po.id
+        WHERE po.invoice_method='picking';
+        """)
+    picking_ids = [row[0] for row in cr.fetchall()]
+    logger.info(
+        "Computing stock_picking.reception_to_invoice for %d pickings" % (
+            len(picking_ids)))
+    res = {}
+    while picking_ids:
+        iids = picking_ids[:AUTOINIT_RECALCULATE_STORED_FIELDS]
+        picking_ids = picking_ids[AUTOINIT_RECALCULATE_STORED_FIELDS:]
+        res.update(picking_obj._get_to_invoice(cr, uid, iids, False, False))
+
+    to_invoice_picking_ids = [k for k, v in res.iteritems() if v is True]
+    logger.info(
+        "Found %d pickings with reception_to_invoice = True" % (
+            len(to_invoice_picking_ids)))
+    picking_obj.write(
+        cr, uid, to_invoice_picking_ids, {'reception_to_invoice': True})
+
+
 @openupgrade.migrate()
 def migrate(cr, version):
     pool = pooler.get_pool(cr.dbname)
+    compute_reception_to_invoice(cr, pool)
     create_workitem_picking(cr, uid, pool)
+    migrate_purchase_order(cr)
     migrate_product_supply_method(cr)
     migrate_procurement_order(cr)
     migrate_stock_warehouse(cr, pool)

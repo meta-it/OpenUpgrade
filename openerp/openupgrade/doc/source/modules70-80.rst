@@ -3,17 +3,17 @@ Module coverage 7.0 -> 8.0
 
 Status :
 
-  * Empty : No information available : Please see the
-    'openupgrade_analysis.txt' file of the module and share your analyse;
+* Empty : No information available : Please see the
+  'openupgrade_analysis.txt' file of the module and share your analyse;
 
-  * 'No change' : No change between 7.0 and 8.0;
+* 'No change' : No change between 7.0 and 8.0;
 
-  * 'Nothing to do' : Analyse has been done, and there is nothing to do;
+* 'Nothing to do' : Analyse has been done, and there is nothing to do;
 
-  * 'Work in progress' : Analyse / Work in progress.  Please review the
-    merge proposals at https://github.com/OCA/OpenUpgrade/pulls
+* 'Work in progress' : Analyse / Work in progress.  Please review the
+  merge proposals at https://github.com/OCA/OpenUpgrade/pulls
 
-  * 'Done' : Analyse has been done & work has been merged into trunk project ;
+* 'Done' : Analyse has been done & work has been merged into trunk project ;
 
 +-----------------------------------+-----------------------------------+
 |Module                             |Status                             |
@@ -57,6 +57,8 @@ Status :
 |analytic_contract_hr_expense       | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
 |analytic_user_function             | Nothing to do                     |
++-----------------------------------+-----------------------------------+
+|anglo_saxon_dropshipping           |                                   |
 +-----------------------------------+-----------------------------------+
 |anonymization                      | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
@@ -102,9 +104,9 @@ Status :
 +-----------------------------------+-----------------------------------+
 |crm                                | Done                              |
 +-----------------------------------+-----------------------------------+
-|crm_claim                          |                                   |
+|crm_claim                          | Done                              |
 +-----------------------------------+-----------------------------------+
-|crm_helpdesk                       |                                   |
+|crm_helpdesk                       | Done                              |
 +-----------------------------------+-----------------------------------+
 |crm_partner_assign                 |                                   |
 +-----------------------------------+-----------------------------------+
@@ -117,6 +119,8 @@ Status :
 |delivery                           | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
 |document                           | Nothing to do                     |
++-----------------------------------+-----------------------------------+
+|document_page                      | Moved to OCA [#document_page]_    |
 +-----------------------------------+-----------------------------------+
 |edi                                | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
@@ -162,7 +166,7 @@ Status :
 +-----------------------------------+-----------------------------------+
 |hr_payroll_account                 | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
-|hr_recruitment                     |                                   |
+|hr_recruitment                     | Done                              |
 +-----------------------------------+-----------------------------------+
 |hr_timesheet                       | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
@@ -234,7 +238,7 @@ Status :
 +-----------------------------------+-----------------------------------+
 |l10n_gr                            | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
-|l10n_gt                            | Nothing to do                     |
+|l10n_gt                            | Done                              |
 +-----------------------------------+-----------------------------------+
 |l10n_hn                            | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
@@ -254,7 +258,7 @@ Status :
 +-----------------------------------+-----------------------------------+
 |l10n_mx                            | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
-|l10n_nl                            | Nothing to do                     |
+|l10n_nl                            | Done                              |
 +-----------------------------------+-----------------------------------+
 |l10n_pa                            | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
@@ -298,9 +302,9 @@ Status :
 +-----------------------------------+-----------------------------------+
 |mass_mailing                       | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
-|membership                         |                                   |
+|membership                         | Done                              |
 +-----------------------------------+-----------------------------------+
-|mrp                                |                                   |
+|mrp                                | Done                              |
 +-----------------------------------+-----------------------------------+
 |mrp_byproduct                      | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
@@ -348,7 +352,7 @@ Status :
 +-----------------------------------+-----------------------------------+
 |portal_project_issue               | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
-|portal_sale                        |                                   |
+|portal_sale                        | Done                              |
 +-----------------------------------+-----------------------------------+
 |portal_stock                       | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
@@ -374,8 +378,6 @@ Status :
 +-----------------------------------+-----------------------------------+
 |project_issue_sheet                | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
-|project_mrp                        | Done (renamed to sale_service)    |
-+-----------------------------------+-----------------------------------+
 |project_timesheet                  | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
 |purchase                           | Done                              |
@@ -384,7 +386,7 @@ Status :
 +-----------------------------------+-----------------------------------+
 |purchase_double_validation         | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
-|purchase_requisition               |                                   |
+|purchase_requisition               | Done                              |
 +-----------------------------------+-----------------------------------+
 |report                             | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
@@ -409,6 +411,8 @@ Status :
 |sale_mrp                           | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
 |sale_order_dates                   | Done                              |
++-----------------------------------+-----------------------------------+
+|sale_service                       | Done (renamed from project_mrp)   |
 +-----------------------------------+-----------------------------------+
 |sales_team                         | Done                              |
 +-----------------------------------+-----------------------------------+
@@ -510,6 +514,8 @@ Status :
 +-----------------------------------+-----------------------------------+
 |website_sale_delivery              | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
+|web_shortcuts                      | Moved to OCA [#web_shortcuts]_    |
++-----------------------------------+-----------------------------------+
 |website_twitter                    | Nothing to do                     |
 +-----------------------------------+-----------------------------------+
 |web_tests                          | Nothing to do                     |
@@ -521,3 +527,9 @@ Status :
 
 .. [#sale_layout] Note that this module was removed in 7.0 and readded in 8.0.
     The migration covered is between 6.1 and 8.0.
+
+.. [#document_page] 'Document Page' Module is now under Odoo Community Association Umbrella:
+    See : https://github.com/OCA/knowledge/tree/8.0/document_page
+
+.. [#web_shortcuts] 'Web Shortcuts' Module is now under Odoo Community Association Umbrella:
+    See : https://github.com/OCA/web/tree/8.0/web_shortcuts

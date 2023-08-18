@@ -21,10 +21,14 @@
 ##############################################################################
 
 import logging
+from datetime import datetime
+
 from openerp import api, SUPERUSER_ID
 from openerp.openupgrade import openupgrade, openupgrade_80
 from openerp.modules.registry import RegistryManager
 from openerp import SUPERUSER_ID as uid
+from openerp.tools.float_utils import float_compare
+from psycopg2.extras import execute_values
 
 logger = logging.getLogger('OpenUpgrade.stock')
 default_spec = {
@@ -44,8 +48,18 @@ default_spec = {
 }
 
 
+@openupgrade.logging()
+def _migrate_security(env):
+    group_stock_manager = env.ref("stock.group_stock_manager")
+    group_account_user = env.ref("account.group_account_user")
+    group_stock_manager.implied_ids -= group_account_user
+
+
 def migrate_product(cr, registry):
     """Migrate track_incoming, track_outgoing"""
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::migrate_product")
+    logger.info("~~~~~~~~~~~~~")
     prod_tmpl_obj = registry['product.template']
     for field in 'track_incoming', 'track_outgoing':
         cr.execute(
@@ -68,6 +82,9 @@ def migrate_move_inventory(cr, registry):
 
     Set product and filter for single product inventories.
     """
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::migrate_move_inventory")
+    logger.info("~~~~~~~~~~~~~")
     openupgrade.logged_query(
         cr,
         """
@@ -104,6 +121,9 @@ def migrate_move_inventory(cr, registry):
 def migrate_stock_location(cr, registry):
     """Create a Push rule for each pair of locations linked. Will break if
     there are multiple warehouses for the same company."""
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::migrate_stock_location")
+    logger.info("~~~~~~~~~~~~~")
     path_obj = registry['stock.location.path']
     location_obj = registry['stock.location']
     warehouse_obj = registry['stock.warehouse']
@@ -123,6 +143,8 @@ def migrate_stock_location(cr, registry):
         loc = location_obj.browse(cr, uid, location[1])
         loc_from = location_obj.browse(cr, uid, location[0])
         name = '{} -> {}'.format(location[5], loc.name)
+        logger.info("~~~~")
+        logger.info(name)
         vals = {
             'active': True,
             'propagate': True,
@@ -158,6 +180,8 @@ def migrate_stock_location(cr, registry):
             vals['picking_type_id'] = warehouse.out_type_id.id
         else:
             vals['picking_type_id'] = warehouse.int_type_id.id
+        if warehouse and warehouse[0].company_id:
+            vals['company_id'] = warehouse[0].company_id.id
         path_obj.create(cr, uid, vals)
 
 
@@ -165,13 +189,19 @@ def migrate_stock_picking(cr, registry):
     """Update picking records with the correct picking_type_id and state.
     As elsewhere, multiple warehouses with the same company pose a problem.
     """
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::migrate_stock_picking")
+    logger.info("~~~~~~~~~~~~~")
     warehouse_obj = registry['stock.warehouse']
     company_obj = registry['res.company']
     picking_obj = registry['stock.picking']
+    location_obj = registry['stock.location']
     type_legacy = openupgrade.get_legacy_name('type')
     for company in company_obj.browse(
             cr, uid, company_obj.search(
                 cr, uid, [])):
+        logger.info("~~~~")
+        logger.info(company.name)
         warehouse_ids = warehouse_obj.search(
             cr, uid, [('company_id', '=', company.id)])
         if not warehouse_ids:
@@ -185,26 +215,53 @@ def migrate_stock_picking(cr, registry):
                 cr, 'stock', 'stock_picking', 'picking_type_id',
                 'No warehouse found for company %s, but this company does '
                 'have pickings. Taking the default warehouse.', company.name)
-        warehouse = warehouse_obj.browse(cr, uid, warehouse_ids[0])
-        if len(warehouse_ids) > 1:
-            openupgrade.message(
-                cr, 'stock', 'stock_picking', 'picking_type_id',
-                'Multiple warehouses found for company %s. Taking first'
-                'one found (%s) to determine the picking types for this '
-                'company\'s pickings. Please verify this setting.',
-                company.name, warehouse.name)
-        # Fill picking_type_id required field
-        for picking_type, type_id in (
-                ('in', warehouse.in_type_id.id),
-                ('out', warehouse.out_type_id.id),
-                ('internal', warehouse.int_type_id.id)):
-            openupgrade.logged_query(
-                cr,
-                """
-                UPDATE stock_picking SET picking_type_id = %s
-                WHERE {type_legacy} = %s
-                """.format(type_legacy=type_legacy),
-                (type_id, picking_type,))
+        for warehouse in warehouse_obj.browse(cr, uid, warehouse_ids):
+            # Select all the child locations of this Warehouse
+            location_ids = location_obj.search(
+                cr, uid,
+                [('id', 'child_of', warehouse.view_location_id.id)])
+
+            # Fill picking_type_id required field
+            for picking_type, type_id in (
+                    ('in', warehouse.in_type_id.id),
+                    ('out', warehouse.out_type_id.id),
+                    ('internal', warehouse.int_type_id.id)):
+                openupgrade.logged_query(
+                    cr,
+                    """
+                    UPDATE stock_picking AS sp
+                    SET picking_type_id = %s
+                    WHERE sp.id IN
+                    ( SELECT sp1.id
+                      FROM stock_picking AS sp1
+                      INNER JOIN stock_move AS sm1
+                      ON sm1.picking_id = sp1.id
+                      WHERE ( sm1.location_dest_id in %s
+                      OR sm1.location_id in %s )
+                      AND sp1.{type_legacy} = %s
+                    )
+                    """.format(type_legacy=type_legacy),
+                    (type_id, tuple(location_ids), tuple(location_ids),
+                     picking_type,))
+
+        if warehouse_ids:
+            warehouse = warehouse_obj.browse(cr, uid, warehouse_ids[0])
+            # For other stock pickings that were associated to no warehouse
+            # at all, just take the picking from the main warehouse.
+            for picking_type, type_id in (
+                    ('in', warehouse.in_type_id.id),
+                    ('out', warehouse.out_type_id.id),
+                    ('internal', warehouse.int_type_id.id)):
+                openupgrade.logged_query(
+                    cr,
+                    """
+                    UPDATE stock_picking as sp
+                    SET picking_type_id = %s
+                    WHERE picking_type_id IS NULL
+                    AND sp.{type_legacy} = %s
+                    """.format(type_legacy=type_legacy),
+                    (type_id, picking_type,))
+
     # state key auto -> waiting
     cr.execute("UPDATE stock_picking SET state = %s WHERE state = %s",
                ('waiting', 'auto',))
@@ -214,10 +271,6 @@ def migrate_stock_picking(cr, registry):
         ADD COLUMN %s INTEGER
         """ % openupgrade.get_legacy_name('move_id'))
     # Recreate stock.pack.operation (only for moves that belongs to a picking)
-    stock_move_obj = registry['stock.move']
-    done_move_ids = stock_move_obj.search(cr, uid, [('state', '=', 'done')])
-    if not done_move_ids:
-        return
     openupgrade.logged_query(
         cr,
         """
@@ -229,11 +282,11 @@ def migrate_stock_picking(cr, registry):
             product_uom_qty, %s, date, location_id, location_dest_id, 'true'
         FROM stock_move
         WHERE
-            id IN %%s
+            state = 'done'
             AND picking_id IS NOT NULL
         """ % (openupgrade.get_legacy_name('move_id'),
-               openupgrade.get_legacy_name('prodlot_id')),
-        (tuple(done_move_ids), ))
+               openupgrade.get_legacy_name('prodlot_id')), )
+
     # And link it with moves creating stock.move.operation.link records
     openupgrade.logged_query(
         cr,
@@ -258,6 +311,9 @@ def set_warehouse_view_location(cr, registry, warehouse):
     of other warehouses and is thus not warehouse specific so we'll just warn
     about the changes we make.
     """
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::set_warehouse_view_location")
+    logger.info("~~~~~~~~~~~~~")
     location_obj = registry['stock.location']
     all_warehouse_view = registry['ir.model.data'].get_object_reference(
         cr, uid, 'stock', 'stock_location_locations')[1]
@@ -295,6 +351,8 @@ def set_warehouse_view_location(cr, registry, warehouse):
                 warehouse.lot_stock_id,
                 warehouse.wh_input_stock_loc_id,
                 warehouse.wh_output_stock_loc_id):
+            logger.info("~~~~")
+            logger.info(location.name)
             if (location.location_id and
                     location.location_id.id != all_warehouse_view):
                 openupgrade.message(
@@ -323,6 +381,9 @@ def _migrate_stock_warehouse(cr, registry, res_id):
     """Warehouse adaptation to the new functionality. Sequences, Picking types,
     Rules.
     """
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::_migrate_stock_warehouse")
+    logger.info("~~~~~~~~~~~~~")
     location_obj = registry['stock.location']
     warehouse_obj = registry['stock.warehouse']
     picking_type_obj = registry['stock.picking.type']
@@ -487,6 +548,45 @@ def _migrate_stock_warehouse(cr, registry, res_id):
             'sequence': max_sequence + 2,
         })
 
+    # If warehouse is main warehouse, we have to create records in
+    # ir_model_data, because these are used in testing:
+    def create_missing(env, xml_id, res_id):
+        """Add missing record to ir_model_data."""
+        model_data_obj = env['ir.model.data']
+        model_data_record = model_data_obj.search([
+            ('module', '=', 'stock'),
+            ('name', '=', xml_id),
+        ], limit=1)
+        if not model_data_record:
+            model_data_obj.create({
+                'module': 'stock',
+                'model': 'stock.picking.type',
+                'name': xml_id,
+                'res_id': res_id,
+            })
+        else:
+            # If there already is a model_data record, check wether it
+            # points to the right record, and modify if not:
+            old_res_id = model_data_record.res_id
+            if res_id != old_res_id:
+                # autocorrect existing ir_model_data:
+                model_data_record.write({'res_id': res_id})
+                logger.warn(
+                    "xml_id %s now points to res_id %d, no longer to %d.",
+                    xml_id, res_id, old_res_id
+                )
+        # Avoid the xml id and the associated resource being dropped by the
+        # orm by manually making a hit on it:
+        model_data_obj._update_dummy('stock.picking.type', 'stock', xml_id)
+
+    with api.Environment.manage():
+        env = api.Environment(cr, SUPERUSER_ID, {})
+        main_warehouse = env.ref('stock.warehouse0')
+        if warehouse.id == main_warehouse.id:
+            create_missing(env, 'picking_type_in', in_type_id)
+            create_missing(env, 'picking_type_out', out_type_id)
+            create_missing(env, 'picking_type_internal', int_type_id)
+
     vals.update({
         'in_type_id': in_type_id,
         'out_type_id': out_type_id,
@@ -505,13 +605,23 @@ def _migrate_stock_warehouse(cr, registry, res_id):
 
 def migrate_stock_warehouses(cr, registry):
     """Migrate all the warehouses"""
-    warehouse_obj = registry['stock.warehouse']
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::migrate_stock_warehouses")
+    logger.info("~~~~~~~~~~~~~")
+
+    # Add a code to all warehouses that have no code
+    openupgrade.logged_query(
+        cr, """
+        UPDATE stock_warehouse SET code= 'WH' || to_char(id, 'FM999MI')
+        WHERE code IS NULL;
+        """)
+
     # Set code
     cr.execute("""select id, code from stock_warehouse order by id asc""")
     res = cr.fetchall()
-    for wh in res:
-        if not wh[1]:
-            warehouse_obj.write(cr, uid, wh[0], {'code': 'WH%s' % (wh[0])})
+    # for wh in res:
+    #     if not wh[1]:
+    #         warehouse_obj.write(cr, uid, wh[0], {'code': 'WH%s' % (wh[0])})
     # Migrate each warehouse
     for wh in res:
         _migrate_stock_warehouse(cr, registry, wh[0])
@@ -521,6 +631,9 @@ def migrate_stock_warehouse_orderpoint(cr):
     """procurement_id to procurement_ids
     :param cr: database cursor
     """
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::migrate_stock_warehouse_orderpoint")
+    logger.info("~~~~~~~~~~~~~")
     registry = RegistryManager.get(cr.dbname)
     openupgrade.m2o_to_x2m(
         cr, registry['stock.warehouse.orderpoint'],
@@ -582,6 +695,10 @@ def migrate_product_supply_method(cr, registry):
     make to order -> MTO Rule
     :param cr:
     """
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::migrate_product_supply_method")
+    logger.info("~~~~~~~~~~~~~")
+
     route_obj = registry['stock.location.route']
     template_obj = registry['product.template']
 
@@ -625,6 +742,10 @@ def migrate_procurement_order(cr, registry):
     e.g. a purchased product from supplier to stock location. Counterpart field
     on the stock move is stock_move.procurement_id.
     """
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::migrate_procurement_order")
+    logger.info("~~~~~~~~~~~~~")
+
     # Reverse the link between procurement orders and the stock moves that
     # satisfy them.
     cr.execute(
@@ -658,6 +779,8 @@ def migrate_procurement_order(cr, registry):
     procurement_obj = registry['procurement.order']
     for company in company_obj.browse(
             cr, uid, company_obj.search(cr, uid, [])):
+        logger.info("~~~~")
+        logger.info(company.name)
         procurement_ids = procurement_obj.search(
             cr, uid, [('company_id', '=', company.id)])
         if not procurement_ids:
@@ -684,33 +807,270 @@ def migrate_procurement_order(cr, registry):
             cr, uid, procurement_ids, {'warehouse_id': warehouse.id})
 
 
+def _move_assign(env, move):
+
+    quant_obj = env["stock.quant"]
+    move_obj = env["stock.move"]
+    to_assign_moves = set()
+    main_domain = {}
+    operations = set()
+    todo_moves = []
+
+    if move.state not in {'confirmed', 'waiting', 'assigned'}:
+        return True
+    if move.location_id.usage in {'supplier', 'inventory', 'production'}:
+        to_assign_moves.add(move.id)
+        # in case the move is returned, we want to try to find
+        # quants before forcing the assignment
+        if not move.origin_returned_move_id:
+            return True
+    if move.product_id.type == 'consu':
+        to_assign_moves.add(move.id)
+        return True
+    else:
+        todo_moves.append(move)
+
+        # we always keep the quants already assigned and try to
+        # find the remaining quantity on quants not assigned only
+        main_domain[move.id] = [('reservation_id', '=', False),
+                                ('qty', '>', 0)]
+
+        # if the move is preceeded, restrict the choice of quants
+        # in the ones moved previously in original move
+        ancestors = move_obj.find_move_ancestors(move)
+        if move.state == 'waiting' and not ancestors:
+            # if the waiting move hasn't yet any ancestor (PO/MO not
+            # confirmed yet), don't find any quant available in stock
+            main_domain[move.id] += [('id', '=', False)]
+        elif ancestors:
+            main_domain[move.id] += [('history_ids', 'in', ancestors)]
+
+        # if the move is returned from another, restrict the choice of
+        # quants to the ones that follow the returned move
+        if move.origin_returned_move_id:
+            main_domain[move.id] += [
+                ('history_ids', 'in', move.origin_returned_move_id.id)]
+        for link in move.linked_move_operation_ids:
+            operations.add(link.operation_id)
+    # Check all ops and sort them: we want to process first the packages,
+    # then operations with lot then the rest
+    operations = list(operations)
+    operations.sort(
+        key=lambda x: ((x.package_id and not x.product_id) and -4 or 0) +
+                      (x.package_id and -2 or 0) + (x.lot_id and -1 or 0))
+    for ops in operations:
+        # first try to find quants based on specific domains given by
+        # linked operations
+        for record in ops.linked_move_operation_ids:
+            _move = record.move_id
+            if _move.id in main_domain:
+                domain = main_domain[_move.id] + record.get_specific_domain()
+                qty = record.qty
+                if qty:
+                    quants = quant_obj.quants_get_prefered_domain(
+                        ops.location_id, _move.product_id, qty, domain=domain,
+                        prefered_domain_list=[],
+                        restrict_lot_id=_move.restrict_lot_id.id,
+                        restrict_partner_id=_move.restrict_partner_id.id)
+                    quant_obj.quants_reserve(quants, _move, record)
+    for _move in todo_moves:
+        # then if the move isn't totally assigned,
+        # try to find quants without any specific domain
+        if _move.state != 'assigned':
+            qty_already_assigned = _move.reserved_availability
+            qty = _move.product_qty - qty_already_assigned
+            quants = quant_obj.quants_get_prefered_domain(
+                _move.location_id, _move.product_id, qty,
+                domain=main_domain[_move.id], prefered_domain_list=[],
+                restrict_lot_id=_move.restrict_lot_id.id,
+                restrict_partner_id=_move.restrict_partner_id.id)
+            quant_obj.quants_reserve(quants, _move)
+
+
+def _move_done(env, move):
+
+    quant_obj = env["stock.quant"]
+    move_qty = {}
+    pickings = set()
+    # Search operations that are linked to the moves
+    operations = set()
+    move_qty[move.id] = move.product_qty
+    for link in move.linked_move_operation_ids:
+        operations.add(link.operation_id)
+
+    # Sort operations according to entire packages first,
+    # then package + lot, package only, lot only
+    operations = list(operations)
+    operations.sort(
+        key=lambda x: ((x.package_id and not x.product_id) and -4 or 0) + (
+            x.package_id and -2 or 0) + (x.lot_id and -1 or 0))
+
+    for ops in operations:
+        if ops.picking_id:
+            pickings.add(ops.picking_id.id)
+        main_domain = [('qty', '>', 0)]
+        for record in ops.linked_move_operation_ids:
+            _move = record.move_id
+
+            prefered_domain = [('reservation_id', '=', move.id)]
+            fallback_domain = [('reservation_id', '=', False)]
+            fallback_domain2 = ['&', ('reservation_id', '!=', move.id),
+                                ('reservation_id', '!=', False)]
+            prefered_domain_list = [prefered_domain] + [fallback_domain] + \
+                                   [fallback_domain2]
+            dom = main_domain + env[
+                'stock.move.operation.link'].get_specific_domain(record)
+            quants = quant_obj.quants_get_prefered_domain(
+                ops.location_id, _move.product_id, record.qty,
+                domain=dom, prefered_domain_list=prefered_domain_list,
+                restrict_lot_id=_move.restrict_lot_id.id,
+                restrict_partner_id=_move.restrict_partner_id.id)
+
+            if ops.product_id:
+                # If a product is given, the result is always
+                # put immediately in the result package
+                # (if it is False, they are without package)
+                quant_dest_package_id = ops.result_package_id.id
+            else:
+                # When a pack is moved entirely,
+                # the quants should not be written
+                # anything for the destination package
+                quant_dest_package_id = False
+                quant_obj = quant_obj.with_context(entire_pack=True)
+            quant_obj.quants_move(
+                quants, _move, ops.location_dest_id,
+                location_from=ops.location_id, lot_id=ops.lot_id.id,
+                owner_id=ops.owner_id.id,
+                src_package_id=ops.package_id.id,
+                dest_package_id=quant_dest_package_id)
+            move_qty[_move.id] -= record.qty
+    # Check for remaining qtys and unreserve/check move_dest_id in
+    move_qty_cmp = float_compare(
+        move_qty[move.id], 0,
+        precision_rounding=move.product_id.uom_id.rounding)
+    if move_qty_cmp > 0:  # (=In case no pack operations in picking)
+        main_domain = [('qty', '>', 0)]
+        prefered_domain = [('reservation_id', '=', move.id)]
+        fallback_domain = [('reservation_id', '=', False)]
+        fallback_domain2 = ['&', ('reservation_id', '!=', move.id),
+                            ('reservation_id', '!=', False)]
+        prefered_domain_list = [prefered_domain] + \
+                               [fallback_domain] + [fallback_domain2]
+        qty = move_qty[move.id]
+        quants = quant_obj.quants_get_prefered_domain(
+            move.location_id, move.product_id, qty, domain=main_domain,
+            prefered_domain_list=prefered_domain_list,
+            restrict_lot_id=move.restrict_lot_id.id,
+            restrict_partner_id=move.restrict_partner_id.id)
+        quant_obj.quants_move(quants, move, move.location_dest_id,
+                              lot_id=move.restrict_lot_id.id,
+                              owner_id=move.restrict_partner_id.id)
+
+    # unreserve the quants and make them available for other operations/moves
+    quant_obj.quants_unreserve(move)
+
+
 def migrate_stock_qty(cr, registry):
     """Reprocess stock moves in done state to fill stock.quant."""
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::migrate_stock_qty")
+    logger.info("~~~~~~~~~~~~~")
+
+    # First set restrict_lot_id so that quants point to correct moves
+    sql = '''
+        UPDATE stock_move SET restrict_lot_id = {}
+    '''.format(openupgrade.get_legacy_name('prodlot_id'))
+    openupgrade.logged_query(cr, sql)
+    # Faster migration with required indexes
+    create_index = """
+        CREATE INDEX IF NOT EXISTS {table}_{col}_index
+        ON {table} USING BTREE({col})
+    """
+    to_index = {
+        "stock_move_operation_link": [
+            "move_id",
+            "operation_id",
+            "reserved_quant_id",
+        ],
+        "stock_pack_operation": [
+            "location_id",
+            "product_id",
+        ],
+    }
+    for table, cols in to_index.items():
+        for col in cols:
+            openupgrade.logged_query(
+                cr,
+                create_index.format(table=table, col=col),
+            )
+
     with api.Environment.manage():
-        env = api.Environment(cr, SUPERUSER_ID, {})
-        done_moves = env['stock.move'].search(
-            [('state', '=', 'done')], order="date")
-        openupgrade.message(
-            cr, 'stock', 'stock_move', 'state',
-            'Reprocess %s stock moves in state done to fill stock.quant',
-            len(done_moves.ids))
-        done_moves.write({'state': 'draft'})
-        # Process moves using action_done.
-        for move in done_moves:
-            date_done = move.date
-            move.action_done()
-            # Rewrite date to keep old data
-            move.date = date_done
-            # Assign the same date for the created quants (not the existing)
-            quants_to_rewrite = move.quant_ids.filtered(
-                lambda x: x.in_date > date_done)
-            quants_to_rewrite.write({'in_date': date_done})
+        env = api.Environment(cr, SUPERUSER_ID, {'prefetch_fields': False})
+        # Force prefetching fields and records that will be used a lot
+        logger.info("Prefetching records")
+        start = datetime.now()
+        moves = env['stock.move'].search(
+            [('state', 'in', ['assigned', 'done'])], order="date")
+        moves.read([
+            'linked_move_operation_ids',
+            'location_dest_id',
+            'location_id',
+            'move_orig_ids',
+            'origin_returned_move_id',
+            'partially_available',
+            'picking_id',
+            'product_id',
+            'product_qty',
+            'reserved_availability',
+            'reserved_quant_ids',
+            'restrict_lot_id',
+            'restrict_partner_id',
+            'split_from',
+            'state',
+        ])
+        locations = moves.mapped("location_id")
+        locations.read([
+            "usage",
+        ])
+        products = moves.mapped("product_id")
+        products.read([
+            'standard_price',
+            'type',
+            'uom_id',
+        ])
+        uoms = products.mapped("uom_id")
+        uoms.read([
+            "rounding",
+        ])
+        total_moves = len(moves)
+        logger.info(
+            "Prefetched %d moves, %d locations, %d products and %d uoms in %s",
+            total_moves,
+            len(locations),
+            len(products),
+            len(uoms),
+            datetime.now() - start,
+        )
+        start = datetime.now()
+        # Process all stock moves
+        for n, move in enumerate(moves):
+            logger.info(
+                "Reprocessing stock.move %d/%d with ID %d",
+                n, total_moves, move.id)
+            if move.state == 'assigned':
+                _move_assign(env, move)
+            else:
+                _move_done(env, move)
+        logger.info("Reprocessed in %s", datetime.now() - start)
 
 
 def migrate_stock_production_lot(cr, registry):
     """Serial numbers migration
     :param cr:
     """
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::migrate_stock_production_lot")
+    logger.info("~~~~~~~~~~~~~")
     lot_obj = registry['stock.production.lot']
     user_obj = registry['res.users']
 
@@ -728,31 +1088,24 @@ def migrate_stock_production_lot(cr, registry):
     # stock.pack.operation linked with related lot before creating the quant
     field_name = openupgrade.get_legacy_name('prodlot_id')
     cr.execute("""
-        SELECT id, %s
-        FROM stock_move
-        WHERE
-            %s IS NOT NULL AND
-            picking_id IS NULL""" % (
-        field_name, field_name))
-    res1 = cr.fetchall()
-    for move, lot in res1:
-        cr.execute("""
-            SELECT quant_id
-            FROM stock_quant_move_rel
-            WHERE move_id = %s""" % (move,))
-        res2 = cr.fetchall()
-        for quant in res2:
-            cr.execute("""
-                UPDATE stock_quant
-                SET lot_id = %s
-                WHERE id = %s""" % (lot, quant[0],))
-        cr.commit()
+        UPDATE stock_quant SET lot_id = ss.lot
+        FROM (SELECT q.quant_id, sm.{fieldname}
+            FROM stock_quant_move_rel q, stock_move sm
+              WHERE sm.{fieldname} IS NOT NULL AND
+                sm.picking_id IS NULL AND sm.id=q.move_id) as ss (qid, lot)
+        WHERE stock_quant.id = ss.qid;
+    """.format(fieldname=field_name))
+    cr.commit()
 
 
 def reset_warehouse_data_ids(cr, registry):
     """ While stock_data.yml creates some noupdate XML IDs, they contain empty
     res_ids because the main warehouse was not fully configured at that time.
     Reset them here."""
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::reset_warehouse_data_ids")
+    logger.info("~~~~~~~~~~~~~")
+
     data_model = registry['ir.model.data']
     warehouse = data_model.xmlid_to_object(
         cr, uid, 'stock.warehouse0')
@@ -781,19 +1134,27 @@ def populate_stock_move_fields(cr, registry):
     """ This function reduce creation time of the stock_move fields
        (See pre script, for more information)
     """
+    logger.info("~~~~~~~~~~~~~")
+    logger.info("stock::post::populate_stock_move_fields")
+    logger.info("~~~~~~~~~~~~~")
+
     sm_obj = registry['stock.move']
     logger.info("Fast creation of the field stock_move.product_qty (post)")
     # Set product_qty = product_uom_qty if uom_id of stock move
     # is the same as uom_id of product. (Main case)
     openupgrade.logged_query(cr, """
-        UPDATE stock_move sm1
+        UPDATE stock_move
         SET product_qty = product_uom_qty
-        FROM
-            (SELECT sm2.id from stock_move sm2
-            INNER join product_product pp on sm2.product_id = pp.id
-            INNER join product_template pt on pp.product_tmpl_id = pt.id
-            where pt.uom_id = sm2.product_uom) as res
-        WHERE sm1.id = res.id""")
+        FROM product_product pp, product_template pt
+            WHERE pp.id=stock_move.product_id AND
+              pt.id=pp.product_tmpl_id AND
+              pt.uom_id = stock_move.product_uom;
+        """)
+    #     (SELECT sm2.id from stock_move sm2
+    #     INNER join product_product pp on sm2.product_id = pp.id
+    #     INNER join product_template pt on pp.product_tmpl_id = pt.id
+    #     where pt.uom_id = sm2.product_uom) as res
+    # WHERE sm1.id = res.id""")
     # Use ORM if uom id are different
     cr.execute(
         """SELECT sm2.id from stock_move sm2
@@ -802,19 +1163,35 @@ def populate_stock_move_fields(cr, registry):
         where pt.uom_id != sm2.product_uom""")
     sm_ids = [row[0] for row in cr.fetchall()]
     qty_vals = sm_obj._quantity_normalize(cr, uid, sm_ids, None, None)
-    for id, qty in qty_vals.iteritems():
-        cr.execute("UPDATE stock_move set product_qty = '%s' where id=%s" % (
-            qty, id))
+    execute_values(cr, "UPDATE stock_move SET product_qty = v.qty "
+                       "FROM (VALUES %s) as v (id, qty) "
+                       "WHERE v.id=stock_move.id", qty_vals.items())
+    # for id, qty in qty_vals.iteritems():
+    #     cr.execute("UPDATE stock_move set product_qty = '%s' where id=%s" % (
+    #         qty, id))
+
+    # If a stock move is Waiting availability ('confirmed'), but the source
+    # location is 'supplier', 'inventory' or 'production', then set it as
+    # Available ('assigned').
+    openupgrade.logged_query(
+        cr,
+        "UPDATE stock_move SET state = 'assigned' "
+        "FROM stock_location sl "
+        "WHERE sl.id=stock_move.location_id AND "
+        "sl.usage IN ('supplier', 'inventory', 'production') AND "
+        "stock_move.state = 'confirmed';"
+    )
 
 
-@openupgrade.migrate()
-def migrate(cr, version):
+@openupgrade.migrate(use_env=True)
+def migrate(env, version):
     """
     It can be the case that procurement was not installed in the 7.0 database,
     as in 7.0 stock was a dependency of procurement and not the other way
     around like it is in 8.0. So we need to check if we are migrating a
     database in which procurement related stuff needs to be migrated.
     """
+    cr = env.cr
     registry = RegistryManager.get(cr.dbname)
     populate_stock_move_fields(cr, registry)
     have_procurement = openupgrade.column_exists(
@@ -841,3 +1218,4 @@ def migrate(cr, version):
         cr, uid, registry, ['stock.production.lot', 'stock.picking'])
     migrate_move_inventory(cr, registry)
     reset_warehouse_data_ids(cr, registry)
+    _migrate_security(env)

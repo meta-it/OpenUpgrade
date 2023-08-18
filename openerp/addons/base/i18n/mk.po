@@ -3,7 +3,7 @@
 # * base
 # 
 # Translators:
-# Aleksandar Vangelovski <aleksandarv@hbee.eu>, 2015
+# Aleksandar Vangelovski <aleksandarv@hbee.eu>, 2015-2016
 # Anica Milanova, 2015
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014
 msgid ""
@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: Odoo 8.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-19 06:31+0000\n"
-"PO-Revision-Date: 2015-11-09 14:32+0000\n"
-"Last-Translator: Martin Trigaux\n"
+"PO-Revision-Date: 2016-12-29 10:29+0000\n"
+"Last-Translator: Aleksandar Vangelovski <aleksandarv@hbee.eu>\n"
 "Language-Team: Macedonian (http://www.transifex.com/odoo/odoo-8/language/mk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2506,7 +2506,7 @@ msgid ""
 "-------------------------------\n"
 "* Planned Revenue by Stage and User (graph)\n"
 "* Opportunities by Stage (graph)\n"
-msgstr "\nГенеричниот Odoo \"менаџмент со клиентски односи\" \"CRM\"\n==================================================\n\nОваа апликација им овозможува на вработените, групно да менаџираат со трагите, можностите, состаноците и телефонските повици.\n\nМенаџира со клучни задачи како што се комуникација, идентификација, приоритизација, доделување на должност, одлука/решение, објави/известувања.\n\nOdoo ветува дека сите случаеви ќе можат да бидат следени/евидентирани од страна на корисниците, клиентите и добавувачите. Возможно е и да автоматски се испраќаат потсетници, да се ескалираат барањата, да се активираат специфични методи и многу други акции базирани на Вашите сопствени предефинирани правила.\n\nНајдобрата работа за овој систем е дека корисниците не треба да направат било што комплицирано. CRM модулот има емаил gateway за синхронизацијата на интерфејсот помеѓу мејловите и Odoo. На тој начин, корисниците можат само да праќат мејлови до побарувачкиот tracker.\n\nOdoo ќе се погрижи за нивното заблагодарување за нивната порака, автоматски поврзувајки ја со соодветниот вработен и ќе се погрижи за сите идни слични наредби да пристигаат на правилните места.\n\n\nТабeлата на CRM ќе го содржи следното:\n-----------------------------------------------------------------\n* Планирани приходи по стази и корисници (графикон)\n* Можности по стази (графикон)\n"
+msgstr "\nГенеричниот Odoo \"менаџмент со клиентски односи\" \"CRM\"\n==================================================\n\nОваа апликација им овозможува на вработените, групно да менаџираат со трагите, можностите, состаноците и телефонските повици.\n\nМенаџира со клучни задачи како што се комуникација, идентификација, приоритизација, доделување на должност, одлука/решение и известувања.\n\nOdoo овозможува сите случаи успешно да се следат од страна на корисниците, клиентите и добавувачите. Може автоматски да се испраќаат потсетници, да се ескалираат барањата, да се активираат специфични методи и многу други акции базирани на Вашите предефинирани правила.\n\nНајдобрата работа за овој систем е дека корисниците не треба да направат било што комплицирано. CRM модулот има емаил gateway за синхронизацијата на интерфејсот помеѓу мејловите и Odoo. На тој начин, корисниците можат само да праќат мејлови до побарувачкиот tracker.\n\nOdoo ќе се погрижи за нивното заблагодарување за нивната порака, автоматски поврзувајки ја со соодветниот вработен и ќе се погрижи за сите идни слични наредби да пристигаат на правилните места.\n\n\nКомандната табла на CRM ќе го содржи следното:\n-----------------------------------------------------------------\n* Планирани приходи по стази и корисници (графикон)\n* Можности по стази (графикон)\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_base
@@ -4293,7 +4293,7 @@ msgstr "\"Група\" е сет на функционални области к
 #. module: base
 #: model:ir.module.module,summary:base.module_hw_posbox_homepage
 msgid "A homepage for the PosBox"
-msgstr ""
+msgstr "Домашна страна на Pos кутијата"
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_exceptions
@@ -5098,7 +5098,7 @@ msgstr "Автентикација"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_auth_ldap
 msgid "Authentication via LDAP"
-msgstr ""
+msgstr "Автентикација преку LDAP"
 
 #. module: base
 #: view:ir.module.module:base.view_module_filter
@@ -6098,7 +6098,7 @@ msgstr "Банкарски сметки на компанија"
 #. module: base
 #: model:res.partner.category,name:base.res_partner_category_17
 msgid "Company Contact"
-msgstr ""
+msgstr "Контакт на компанија"
 
 #. module: base
 #: model:ir.actions.act_window,name:base.action_inventory_form
@@ -7528,7 +7528,7 @@ msgstr "Грешен контекст:\nПриказ `%(view_name)s`"
 #: code:addons/models.py:1266
 #, python-format
 msgid "Error details:"
-msgstr ""
+msgstr "Опис на дисфункцијата/еророт:"
 
 #. module: base
 #: code:addons/base/ir/ir_model.py:419 code:addons/base/ir/ir_model.py:421
@@ -8023,7 +8023,7 @@ msgstr "За повеќе детали околу преведување Odoo н
 msgid ""
 "For one2many fields, the field on the target model that implement the "
 "opposite many2one relationship"
-msgstr ""
+msgstr "За one2many полиња, полето на таргет моделот кој ја имплементира спротивната many2one врска"
 
 #. module: base
 #: help:ir.model.fields,relation:0
@@ -8043,7 +8043,7 @@ msgid ""
 "For this kind of document, you may only access records you created yourself.\n"
 "\n"
 "(Document type: %s)"
-msgstr ""
+msgstr "За овој вид на документ, можете само да пристапите до записи кои што вие сами сте ги креирале.\n\n(Тип на документ: %s)"
 
 #. module: base
 #: selection:ir.actions.act_window,view_type:0
@@ -9180,7 +9180,7 @@ msgstr "Instant Messaging Bus, Ви овозможува да праќате п�
 #: code:addons/models.py:1460
 #, python-format
 msgid "Insufficient fields for Calendar View!"
-msgstr ""
+msgstr "Недоволни полиња за календарски преглед!"
 
 #. module: base
 #: code:addons/models.py:1472
@@ -9188,7 +9188,7 @@ msgstr ""
 msgid ""
 "Insufficient fields to generate a Calendar View for %s, missing a date_stop "
 "or a date_delay"
-msgstr ""
+msgstr "Недоволен број на полиња за да се генерира календарски приказ за %s, ви недостига date_stop или date_delay"
 
 #. module: base
 #: selection:ir.property,type:0
@@ -9229,7 +9229,7 @@ msgstr "Intrastat известување"
 #. module: base
 #: report:ir.module.reference:0
 msgid "Introspection report on objects"
-msgstr ""
+msgstr "Интроспекциски извештај на објекти"
 
 #. module: base
 #: code:addons/models.py:4485
@@ -10249,7 +10249,7 @@ msgstr "Many2One"
 #: view:ir.model.relation:base.view_model_relation_list
 #: model:ir.ui.menu,name:base.ir_model_relation_menu
 msgid "ManyToMany Relations"
-msgstr ""
+msgstr "ManyToMany врски"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_product_margin
@@ -10442,13 +10442,13 @@ msgstr "Недостасува SMTP опслужувач"
 #: code:addons/models.py:6067
 #, python-format
 msgid "Missing required value for the field '%s' (%s)"
-msgstr ""
+msgstr "Недостига потребната вредност за полето '%s' (%s)"
 
 #. module: base
 #: code:addons/models.py:6064
 #, python-format
 msgid "Missing required value for the field '%s'."
-msgstr ""
+msgstr "Недостига потребната вредност за полето '%s'."
 
 #. module: base
 #: model:res.partner.title,name:base.res_partner_title_mister
@@ -11550,7 +11550,7 @@ msgstr "Десен родител"
 #. module: base
 #: field:res.partner,parent_name:0
 msgid "Parent name"
-msgstr ""
+msgstr "Име на родител"
 
 #. module: base
 #: field:ir.actions.report.xml,parser:0
@@ -11652,17 +11652,17 @@ msgstr "Основен модул - примател на средства"
 #. module: base
 #: model:ir.module.module,summary:base.module_payment_adyen
 msgid "Payment Acquirer: Adyen Implementation"
-msgstr ""
+msgstr "Примател на средства: Adyen имплементација"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_payment_authorize
 msgid "Payment Acquirer: Authorize.net Implementation"
-msgstr ""
+msgstr "Примател на средства: Authorize.net имплементација"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_payment_buckaroo
 msgid "Payment Acquirer: Buckaroo Implementation"
-msgstr ""
+msgstr "Примател на средства: Buckaroo имплементација"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_payment_ogone
@@ -11926,12 +11926,12 @@ msgstr "Португалски / Português"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hw_posbox_homepage
 msgid "PosBox Homepage"
-msgstr ""
+msgstr "PosBox почетна страна"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hw_posbox_upgrade
 msgid "PosBox Software Upgrader"
-msgstr ""
+msgstr "PosBox надградувач на софтвер"
 
 #. module: base
 #: help:ir.model.constraint,name:0
@@ -12197,7 +12197,7 @@ msgstr "Катар"
 #. module: base
 #: field:ir.values,key2:0
 msgid "Qualifier"
-msgstr ""
+msgstr "Квалификувач"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_stock
@@ -12292,7 +12292,7 @@ msgstr "Запис"
 #: code:addons/models.py:4769
 #, python-format
 msgid "Record #%d of %s not found, cannot copy!"
-msgstr ""
+msgstr "Запис #%d од %s не е пронајден, не може да се копира!"
 
 #. module: base
 #: field:ir.actions.act_window,res_id:0 field:ir.actions.server,id_value:0
@@ -12591,7 +12591,7 @@ msgstr "Забрани во листи"
 #. module: base
 #: model:res.partner.category,name:base.res_partner_category_16
 msgid "Retailer"
-msgstr ""
+msgstr "Tрговец на мало"
 
 #. module: base
 #: model:res.country,name:base.re
@@ -12601,7 +12601,7 @@ msgstr "Реунион (Француски)"
 #. module: base
 #: field:res.partner.category,parent_right:0
 msgid "Right parent"
-msgstr ""
+msgstr "Правилен родител \"parent\""
 
 #. module: base
 #: selection:res.lang,direction:0
@@ -12657,12 +12657,12 @@ msgstr "Правилата не можат да бидат аплицирани 
 #: code:addons/base/ir/ir_actions.py:809
 #, python-format
 msgid "Run %s"
-msgstr ""
+msgstr "Изврши %s"
 
 #. module: base
 #: model:ir.actions.server,name:base.action_run_ir_action_todo
 msgid "Run Remaining Action Todo"
-msgstr ""
+msgstr "Уклучи ги останатите акции Todo"
 
 #. module: base
 #: selection:base.language.install,lang:0
@@ -12769,7 +12769,7 @@ msgstr "Продажба"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_layout
 msgid "Sale Layout"
-msgstr ""
+msgstr "Изглед на продажба"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_layout
@@ -12896,7 +12896,7 @@ msgstr "Пребарувачки приказ"
 #. module: base
 #: field:ir.actions.act_window,search_view_id:0
 msgid "Search View Ref."
-msgstr ""
+msgstr "Пребарувачки приказ референца"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_applicant_document
@@ -12933,12 +12933,12 @@ msgstr "Безбедност и автентикација"
 #. module: base
 #: model:res.groups,name:base.group_sale_salesman
 msgid "See Own Leads"
-msgstr ""
+msgstr "Види ги сопствените траги"
 
 #. module: base
 #: model:res.groups,name:base.group_sale_salesman_all_leads
 msgid "See all Leads"
-msgstr ""
+msgstr "Види ги сите траги"
 
 #. module: base
 #: code:addons/base/ir/ir_fields.py:306
@@ -13534,7 +13534,7 @@ msgstr "Шри Ланка"
 #. module: base
 #: model:ir.ui.menu,name:base.menu_project_config_project
 msgid "Stages"
-msgstr ""
+msgstr "Етапи"
 
 #. module: base
 #: selection:ir.sequence,implementation:0
@@ -13883,7 +13883,7 @@ msgstr ""
 #. module: base
 #: field:ir.actions.server,wkf_model_name:0
 msgid "Target Model Name"
-msgstr ""
+msgstr "Таргет име на модел"
 
 #. module: base
 #: field:ir.actions.act_window,target:0
@@ -13910,7 +13910,7 @@ msgstr "Даночен број. Чекирајте го полето докол
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_hr
 msgid "Team Page"
-msgstr ""
+msgstr "Страна на тим"
 
 #. module: base
 #: model:ir.ui.menu,name:base.menu_custom
@@ -13966,7 +13966,7 @@ msgstr "Шаблон на сметководствен план"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_test_new_api
 msgid "Test API"
-msgstr ""
+msgstr "Тестирај API"
 
 #. module: base
 #: view:ir.mail_server:base.ir_mail_server_form
@@ -14209,7 +14209,7 @@ msgid ""
 "The operation cannot be completed, probably due to the following:\n"
 "- deletion: you may be trying to delete a record while other records still reference it\n"
 "- creation/update: a mandatory field is not correctly set"
-msgstr ""
+msgstr "Операцијата неможе да се заврши, веројатно поради следното:\n- бришење: можеби се обидувате да избришете запис додека другите записи сеуште покажуваат на него\n- креирање/ажурирање: задолжителното поле не е правилно подесено"
 
 #. module: base
 #: help:ir.model.fields,domain:0
@@ -14284,7 +14284,7 @@ msgid ""
 "The requested operation cannot be completed due to security restrictions. Please contact your system administrator.\n"
 "\n"
 "(Document type: %s, Operation: %s)"
-msgstr ""
+msgstr "Бараната операција не може да се изврши поради безбедносни причини. Контактирајте го администраторот.\n\n(Тип на документ: %s, Операција: %s)"
 
 #. module: base
 #: code:addons/fields.py:913
@@ -14317,7 +14317,7 @@ msgstr "Код на држава, максимум три карактери."
 msgid ""
 "The sum of the data (2nd field) is null.\n"
 "We can't draw a pie chart !"
-msgstr ""
+msgstr "Сумата на информациите (второ поле) е нула.\nНе може да се исцрта пита-графикон !"
 
 #. module: base
 #: help:ir.model.fields,model:0
@@ -14335,7 +14335,7 @@ msgstr "Филтер кој е одреден кон единствен кори
 #: code:addons/models.py:6079
 #, python-format
 msgid "The value for the field '%s' already exists."
-msgstr ""
+msgstr "Вредноста за полето '%s' веќе постои."
 
 #. module: base
 #: code:addons/base/ir/ir_filters.py:97
@@ -14744,7 +14744,7 @@ msgstr "Вид на серверна акција. Достапни се сле�
 #: help:ir.model.constraint,type:0
 msgid ""
 "Type of the constraint: `f` for a foreign key, `u` for other constraints."
-msgstr ""
+msgstr "Тип на ограничувањето: `f` за странски клуч, `u` за други ограничувања."
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ae
@@ -14797,7 +14797,7 @@ msgstr "Украинско / українська"
 #, python-format
 msgid ""
 "Unable to delete this document because it is used as a default property"
-msgstr ""
+msgstr "Не можете да го избришете документот бидејќи е користен како default сопственост"
 
 #. module: base
 #: code:addons/base/module/module.py:372
@@ -14813,7 +14813,7 @@ msgstr "Не е во можност да се инсталира модулот 
 msgid ""
 "Unable to process module \"%s\" because an external dependency is not met: "
 "%s"
-msgstr ""
+msgstr "Не е во можност да се инсталира модулот \"%s\" бидејќи надворешната зависност не е исполнета: %s"
 
 #. module: base
 #: code:addons/base/module/module.py:374
@@ -14821,7 +14821,7 @@ msgstr ""
 msgid ""
 "Unable to upgrade module \"%s\" because an external dependency is not met: "
 "%s"
-msgstr ""
+msgstr "Не е во можност да се надгради модулот \"%s\" бидејќи надворешната зависност не е исполнета: %s"
 
 #. module: base
 #: view:ir.ui.view:base.view_view_search
@@ -14869,13 +14869,13 @@ msgstr ""
 #: code:addons/models.py:1230
 #, python-format
 msgid "Unknown database identifier '%s'"
-msgstr ""
+msgstr "Непознат идентификатор '%s' на базата на информации"
 
 #. module: base
 #: code:addons/models.py:1083
 #, python-format
 msgid "Unknown error during import:"
-msgstr ""
+msgstr "Непознат ерор при импортирање:"
 
 #. module: base
 #: code:addons/report_sxw.py:392
@@ -14906,7 +14906,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Unrecognized extension: must be one of .csv, .po, or .tgz (received .%s)."
-msgstr ""
+msgstr "Непрепознаен суфикс: мора да ви биде еден од овие: .csv, .po, или .tgz (примени .%s)."
 
 #. module: base
 #: view:ir.translation:base.view_translation_search
@@ -15016,7 +15016,7 @@ msgstr "Користи ја адресата на компанијата"
 #. module: base
 #: selection:ir.actions.server,use_relational_model:0
 msgid "Use a relation field on the base model"
-msgstr ""
+msgstr "Користи поле на врска на базичниот модел"
 
 #. module: base
 #: model:ir.module.module,description:base.module_hr_gamification
@@ -15042,7 +15042,7 @@ msgstr "Користи го форматот '%s'"
 #. module: base
 #: help:ir.actions.act_window,usage:0
 msgid "Used to filter menu and home actions from the user form."
-msgstr ""
+msgstr "Користено за филтрирање на мени и home акции од корисничкиот формулар."
 
 #. module: base
 #: help:res.users,login:0
@@ -15088,7 +15088,7 @@ msgstr "Корисничка најава"
 #: model:ir.ui.menu,name:base.menu_values_form_defaults
 #: view:ir.values:base.values_view_form_defaults
 msgid "User-defined Defaults"
-msgstr ""
+msgstr "Кориснички дефинирани стандарди"
 
 #. module: base
 #: model:ir.ui.menu,name:base.menu_ir_filters
@@ -15161,7 +15161,7 @@ msgstr ""
 #. module: base
 #: field:ir.actions.server,fields_lines:0
 msgid "Value Mapping"
-msgstr ""
+msgstr "Мапирање на вредност"
 
 #. module: base
 #: model:res.country,name:base.vu
@@ -15230,7 +15230,7 @@ msgstr "Погледни архитектура"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_web_view_editor
 msgid "View Editor"
-msgstr ""
+msgstr "Приказ на едитор"
 
 #. module: base
 #: field:ir.actions.act_window,view_mode:0
@@ -15240,7 +15240,7 @@ msgstr "Режим на преглед"
 #. module: base
 #: field:ir.ui.view,name:0
 msgid "View Name"
-msgstr ""
+msgstr "Име на преглед"
 
 #. module: base
 #: field:ir.actions.act_window,view_id:0
@@ -15257,14 +15257,14 @@ msgstr "Тип на поглед"
 #. module: base
 #: field:ir.ui.view,mode:0
 msgid "View inheritance mode"
-msgstr ""
+msgstr "Прегледај наследен мод"
 
 #. module: base
 #: help:ir.actions.act_window,view_type:0
 msgid ""
 "View type: Tree type to use for the tree view, set to 'tree' for a "
 "hierarchical tree view, or 'form' for a regular list view"
-msgstr ""
+msgstr "Тип на преглед: Дрво, за гледање преку овој тип, подеси на 'дрво' за хиерархичен приказ, или 'форм' за регуларен листовен приказ."
 
 #. module: base
 #: view:ir.actions.act_window:base.view_window_action_form
@@ -15360,7 +15360,7 @@ msgstr "Внимание!"
 #: code:addons/models.py:5803 code:addons/models.py:5856
 #, python-format
 msgid "Warnings"
-msgstr ""
+msgstr "Предупредувања"
 
 #. module: base
 #: view:base.module.upgrade:base.view_base_module_upgrade_install
@@ -16150,7 +16150,7 @@ msgstr ""
 #: code:addons/mail.py:285
 #, python-format
 msgid "read more"
-msgstr ""
+msgstr "прочитај повеќе"
 
 #. module: base
 #: view:res.config:base.res_config_view_base
@@ -16180,7 +16180,7 @@ msgstr "тест-поле-конвертор"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_test_impex
 msgid "test-import-export"
-msgstr ""
+msgstr "тест-увоз-извоз"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_test_inherit
@@ -16215,40 +16215,40 @@ msgstr "тест_конвертирај"
 #. module: base
 #: model:res.groups,comment:base.group_hr_user
 msgid "the user will be able to approve document created by employees."
-msgstr ""
+msgstr "корисникот ќе може да ги одобрува документите кои биле создадени од вработените."
 
 #. module: base
 #: model:res.groups,comment:base.group_user
 msgid ""
 "the user will be able to manage his own human resources stuff (leave "
 "request, timesheets, ...), if he is linked to an employee in the system."
-msgstr ""
+msgstr "корисникот ќе биде во можност да ги менаџира своите сопствени предмети на човечките ресурси (барања за одмор, временските таблици, ...), но само ако тој е поврзан со некој вработен во системот."
 
 #. module: base
 #: model:res.groups,comment:base.group_sale_salesman_all_leads
 msgid ""
 "the user will have access to all records of everyone in the sales "
 "application."
-msgstr ""
+msgstr "корисникот ќе има пристап до сите записи од сите во апликацијата за продажба."
 
 #. module: base
 #: model:res.groups,comment:base.group_sale_salesman
 msgid "the user will have access to his own data in the sales application."
-msgstr ""
+msgstr "корисникот ќе има пристап до неговите податоци во апликацијата за продажба."
 
 #. module: base
 #: model:res.groups,comment:base.group_hr_manager
 msgid ""
 "the user will have an access to the human resources configuration as well as"
 " statistic reports."
-msgstr ""
+msgstr "корисникот ќе има пристап до конфигурацијата на човечки ресурси како и статистичките податоци."
 
 #. module: base
 #: model:res.groups,comment:base.group_sale_manager
 msgid ""
 "the user will have an access to the sales configuration as well as statistic"
 " reports."
-msgstr ""
+msgstr "корисникот ќе има пристап до конфигурацијата на продажба и до статистичките извештаи."
 
 #. module: base
 #: view:ir.actions.server:base.view_server_action_form

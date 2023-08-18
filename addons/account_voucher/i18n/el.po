@@ -4,13 +4,15 @@
 # 
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014
+# Kostas Goutoudis <goutoudis@gmail.com>, 2015-2016
+# Kostas Goutoudis <goutoudis@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo 8.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-21 14:07+0000\n"
-"PO-Revision-Date: 2015-11-22 18:28+0000\n"
-"Last-Translator: Goutoudis Kostas <goutoudis@gmail.com>\n"
+"PO-Revision-Date: 2016-07-01 12:45+0000\n"
+"Last-Translator: Kostas Goutoudis <goutoudis@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/odoo/odoo-8/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +27,7 @@ msgid ""
 "* The 'Pro-forma' when voucher is in Pro-forma status,voucher does not have an voucher number.                         \n"
 "* The 'Posted' status is used when user create voucher,a voucher number is generated and voucher entries are created in account                         \n"
 "* The 'Cancelled' status is used when user cancel voucher."
-msgstr " * Η κατάσταση 'Πρόχειρο' χρησιμοποιείται όταν ένας χρήστης κωδικοποιεί ένα νέο και μη βεβαιωμένο Παραστατικό.                         \n* Η κατάσταση 'Προσωρινό' όταν ένα παραστατικό είναι σε Προσωρινή κατάσταση, το παραστατικό δεν φέρει αριθμό παραστατικού.                         \n* Η κατάσταση 'Καταχωρημένο' όταν ένας χρήστης δημιουργήσει ένα παραστατικό, δημιουργείται ο αριθμός και οι καταχωρήσεις του παραστατικού                         \n* Η κατάσταση 'Ακυρωμένο' όταν ένας χρήστης ακυρώσει ένα παραστατικό."
+msgstr "* Η κατάσταση 'Πρόχειρο' χρησιμοποιείται όταν ένας χρήστης κωδικοποιεί ένα νέο και μη βεβαιωμένο Παραστατικό.                         \n* Η κατάσταση 'Προσωρινό' όταν ένα παραστατικό είναι σε Προσωρινή κατάσταση, το παραστατικό δεν φέρει αριθμό παραστατικού.                         \n* Η κατάσταση 'Καταχωρημένο' όταν ένας χρήστης δημιουργήσει ένα παραστατικό, δημιουργείται ο αριθμός και οι καταχωρήσεις του παραστατικού                         \n* Η κατάσταση 'Ακυρωμένο' όταν ένας χρήστης ακυρώσει ένα παραστατικό."
 
 #. module: account_voucher
 #: field:sale.receipt.report,nbr:0
@@ -35,13 +37,13 @@ msgstr "# Γραμμών Απόδειξης"
 #. module: account_voucher
 #: view:account.voucher:account_voucher.view_voucher_form
 msgid "(Update)"
-msgstr "(Ανανέωση)"
+msgstr "(ενημέρωση)"
 
 #. module: account_voucher
 #: view:account.voucher:account_voucher.view_purchase_receipt_form
 #: view:account.voucher:account_voucher.view_sale_receipt_form
 msgid "(update)"
-msgstr "(αναβάθμιση)"
+msgstr "(ενημέρωση)"
 
 #. module: account_voucher
 #: model:ir.actions.act_window,help:account_voucher.action_vendor_payment
@@ -102,7 +104,7 @@ msgid ""
 "            this analysis to your needs.\n"
 "          </p>\n"
 "        "
-msgstr "<p>\n            Από αυτή την εγγραφή μπορείτε να δείτε την επισκόπηση του τιμολογηθέντος ποσού\n            στους πελάτες σας, καθώς και τις καθυστερήσεις πληρωμών. Το εργαλείο αναζήτησης μπορεί\n            επίσης να χρησιμοποιηθεί για να εξατομικεύσει τις αναφορές Τιμολογίων, και κατά συνέπεια\n            να ταυτοποιήσει την ανάλυση με τις ανάγκες σας.\n           </p>\n        "
+msgstr "<p>\nΑπό αυτή την εγγραφή μπορείτε να δείτε την επισκόπηση του τιμολογημένου ποσού στους πελάτες σας, καθώς και τις καθυστερήσεις πληρωμών. Το εργαλείο αναζήτησης μπορεί επίσης να χρησιμοποιηθεί για να εξατομικεύσει τις αναφορές Τιμολογίων, και κατά συνέπεια να ταυτοποιήσει την ανάλυση με τις ανάγκες σας.\n</p>\n        "
 
 #. module: account_voucher
 #: field:account.voucher,account_id:0 field:account.voucher.line,account_id:0
@@ -247,12 +249,12 @@ msgstr "Λάθος Ρύθμισης!"
 #. module: account_voucher
 #: field:account.voucher,writeoff_acc_id:0
 msgid "Counterpart Account"
-msgstr ""
+msgstr "Αντίστοιχος Λογαριασμός"
 
 #. module: account_voucher
 #: field:account.voucher,comment:0
 msgid "Counterpart Comment"
-msgstr ""
+msgstr "Αντίστοιχο Σχόλιο"
 
 #. module: account_voucher
 #: field:account.voucher,create_uid:0 field:account.voucher.line,create_uid:0
@@ -298,14 +300,14 @@ msgstr "Επιλογές Νομίσματος"
 #: view:account.voucher:account_voucher.view_voucher_filter_customer_pay
 #: view:account.voucher:account_voucher.view_voucher_filter_sale
 msgid "Customer"
-msgstr "Πελάτες"
+msgstr "Πελάτης"
 
 #. module: account_voucher
 #: model:ir.actions.act_window,name:account_voucher.act_pay_voucher
 #: model:ir.actions.act_window,name:account_voucher.action_vendor_receipt
 #: model:ir.ui.menu,name:account_voucher.menu_action_vendor_receipt
 msgid "Customer Payments"
-msgstr "Πληρωμές Πελατών"
+msgstr "Εισπράξεις Πελατών"
 
 #. module: account_voucher
 #: field:account.voucher,date:0 field:account.voucher.line,date_original:0
@@ -521,7 +523,7 @@ msgstr "Στοιχείο Ημερολογίου"
 #: view:account.voucher:account_voucher.view_voucher_form
 #: field:account.voucher,move_ids:0
 msgid "Journal Items"
-msgstr "Στοιχεία Ημερολογίου"
+msgstr "Εγγραφές Ημερολογίων"
 
 #. module: account_voucher
 #: model:ir.actions.act_window,name:account_voucher.action_voucher_list
@@ -542,12 +544,12 @@ msgstr "Τελευταία ημερομηνία μηνύματος"
 #. module: account_voucher
 #: field:account.voucher,write_uid:0 field:account.voucher.line,write_uid:0
 msgid "Last Updated by"
-msgstr "Τελευταία Αναβαθμίστηκε από"
+msgstr "Τελευταία Ενημέρωση από"
 
 #. module: account_voucher
 #: field:account.voucher,write_date:0 field:account.voucher.line,write_date:0
 msgid "Last Updated on"
-msgstr "Τελευταία Αναβαθμίστηκε στις"
+msgstr "Τελευταία Ενημέρωση στις"
 
 #. module: account_voucher
 #: field:account.voucher,name:0
@@ -613,7 +615,7 @@ msgstr "Άνοιγμα Ημερολογιακών Καταχωρήσεων Πρ�
 #. module: account_voucher
 #: field:account.voucher.line,amount_original:0
 msgid "Original Amount"
-msgstr "Αρχεικό Ποσό"
+msgstr "Αρχικό Ποσό"
 
 #. module: account_voucher
 #: view:account.voucher:account_voucher.view_low_priority_payment_form
@@ -647,7 +649,7 @@ msgstr "Συνεργάτης"
 #. module: account_voucher
 #: view:account.invoice:account_voucher.view_invoice_supplier
 msgid "Pay"
-msgstr "Πλήρωσε"
+msgstr "Πληρωμή"
 
 #. module: account_voucher
 #: view:account.voucher:account_voucher.view_purchase_receipt_form
@@ -759,7 +761,7 @@ msgstr "Αποστολή"
 #: view:sale.receipt.report:account_voucher.view_sale_receipt_report_search
 #: selection:sale.receipt.report,state:0
 msgid "Posted"
-msgstr "Posted"
+msgstr "Καταχωρημένο"
 
 #. module: account_voucher
 #: view:account.voucher:account_voucher.view_voucher_filter
@@ -901,7 +903,7 @@ msgstr "Ορισμός σε Πρόχειρη"
 #: field:account.voucher,state:0
 #: view:sale.receipt.report:account_voucher.view_sale_receipt_report_search
 msgid "Status"
-msgstr "Καθεστώς"
+msgstr "Κατάσταση"
 
 #. module: account_voucher
 #: model:mail.message.subtype,name:account_voucher.mt_voucher_state_change
@@ -927,7 +929,7 @@ msgstr "Περίληψη"
 #: code:addons/account_voucher/account_voucher.py:187
 #, python-format
 msgid "Supplier"
-msgstr "Πριμηθευτής"
+msgstr "Προμηθευτής"
 
 #. module: account_voucher
 #: view:account.voucher:account_voucher.view_vendor_payment_form
@@ -1042,7 +1044,7 @@ msgstr "Τύπος"
 #. module: account_voucher
 #: field:account.voucher,message_unread:0
 msgid "Unread Messages"
-msgstr "Αδιάβαστα Μυνήματα"
+msgstr "Αδιάβαστα Μηνύματα"
 
 #. module: account_voucher
 #: view:account.voucher:account_voucher.view_vendor_payment_form

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Odoo 8.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-21 14:08+0000\n"
-"PO-Revision-Date: 2015-11-17 12:36+0000\n"
+"PO-Revision-Date: 2017-09-22 08:18+0000\n"
 "Last-Translator: Martin Trigaux\n"
 "Language-Team: Indonesian (http://www.transifex.com/odoo/odoo-8/language/id/)\n"
 "MIME-Version: 1.0\n"
@@ -32,7 +32,7 @@ msgstr "Tambahkan"
 #: field:email.template,user_signature:0
 #: field:email_template.preview,user_signature:0
 msgid "Add Signature"
-msgstr ""
+msgstr "Tambah Tanda Tangan"
 
 #. module: email_template
 #: view:email.template:email_template.email_template_form
@@ -142,7 +142,7 @@ msgstr "Dibuat pada"
 #. module: email_template
 #: field:email.template,null_value:0 field:email_template.preview,null_value:0
 msgid "Default Value"
-msgstr ""
+msgstr "Nilai Default"
 
 #. module: email_template
 #: field:email.template,use_default_to:0
@@ -260,7 +260,7 @@ msgstr ""
 #. module: email_template
 #: field:email.template,lang:0 field:email_template.preview,lang:0
 msgid "Language"
-msgstr ""
+msgstr "Bahasa"
 
 #. module: email_template
 #: field:email.template,write_uid:0 field:email_template.preview,write_uid:0
@@ -326,7 +326,7 @@ msgstr ""
 #: field:email.template,mail_server_id:0
 #: field:email_template.preview,mail_server_id:0
 msgid "Outgoing Mail Server"
-msgstr ""
+msgstr "Server - Surat Keluar"
 
 #. module: email_template
 #: view:email.template:email_template.email_template_form
